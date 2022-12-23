@@ -1,0 +1,57 @@
+<template>
+    <template if:true={showSpinner}>
+        <div>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <lightning-card  title="Contact Products">
+        <template if:false={isEmpty}>
+            No Products Found :(
+        </template>
+        <template if:true={isEmpty}>
+            <table class="slds-table slds-table_cell-buffer slds-table_header-hidden">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th>
+                            <div class="slds-truncate">Product Name</div>
+                        </th>
+                        <th>
+                            <div class="slds-truncate">Service Name</div>
+                        </th>                            
+                        <th>
+                            <div class="slds-truncate">Country</div>
+                        </th>
+                        <th>
+                            <div class="slds-truncate">Price</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={serviceProducts} for:item="serviceProd">
+                        <tr class="slds-hint-parent" key={serviceProd.Id}>
+                            <td>
+                                <div class="slds-truncate">{serviceProd.Product__r.Name}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{serviceProd.Service__r.Name}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{serviceProd.Country_Code__c}</div>
+                            </td>
+                            <td>                                
+                                <template if:true={serviceProd.Price__c}>                                    
+                                    <div class="slds-truncate" title={serviceProd.Price__c}>
+                                        <lightning-formatted-number value={serviceProd.Price__c} format-style="currency" currency-code={serviceProd.Currency_Code__c}></lightning-formatted-number>
+                                    </div>
+                                </template>
+                                <template if:true={serviceProd.Is_Free__c}>
+                                    <div class="slds-truncate">Free</div>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>      
+    </lightning-card>    
+</template>
